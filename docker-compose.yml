@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  php:
+    depends_on:
+      - db
+    build: .
+    ports: ['8000:80']
+    volumes: ['./:/var/www/html']
+    restart: always
+    networks:
+      - mw10_api
+
+  db:
+    image: mariadb:10.5.15
+    volumes:
+      - mw10_api_db:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: mw10_api
+    ports:
+      - '3306:3306'
+    networks:
+      - mw10_api
+
+networks:
+  mw10_api:
+volumes:
+  mw10_api_db:
